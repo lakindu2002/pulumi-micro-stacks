@@ -2,6 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as awsx from "@pulumi/awsx";
 import { noteTable } from "../resources";
+import { nanoid } from 'nanoid';
 
 const config = new pulumi.Config();
 const env = config.require("env");
@@ -10,7 +11,7 @@ export const createNote = new aws.lambda.CallbackFunction(`${env}-create-note`, 
     callback: async (event: awsx.apigateway.Request, context): Promise<awsx.apigateway.Response> => {
         const documentClient = new aws.sdk.DynamoDB.DocumentClient();
         const { title, body } = JSON.parse(event.body as string);
-        const noteId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const noteId = nanoid();
         const note = {
             // hashkey as "id" as defined in core-infrastructure table.
             id: noteId,
