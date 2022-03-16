@@ -22,7 +22,10 @@ const apiGateway = new awsx.apigateway.API(`${env}-api-gateway`, {
             method: 'GET',
             eventHandler: notes.getAllNotes,
         }
-    ]
+    ],
+    restApiArgs: {
+        binaryMediaTypes: []
+    }
 });
 
 export const { url } = apiGateway;
